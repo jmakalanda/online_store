@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:src="@{/js/cssandjs/actions.js}"></script>
+    <style>
+        #overlay {
+            position: relative; /* Sit on top of the page content */
+            width: 50%; /* Full width (cover the whole page) */
+            height: 100%; /* Full height (cover the whole page) */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.1); /* Black background with opacity */
+            z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+            cursor: pointer; /* Add a pointer on hover */
+        }
+        h2 {
+            font-family: sans-serif;
+            font-size: 1.5em;
+
+            color: red;
+        }
+        h1 {
+            font-family: sans-serif;
+            font-size: 2em;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<center>
+    <div id="overlay">
+        <br/>
+<h1> Search for a product </h1>
+<form name="searchForm" action="#" th:action="@{/store}" th:object="${search}" method="post" onsubmit="return validateForm()" >
+    <p>Product Type:
+        <select id="type" th:field="*{searchType}">
+            <option value="Music">Music</option>
+            <option value="Book">Books</option>
+            <option value="Game">Games</option>
+        </select>
+    </p>
+    <p>Product Name: <input name="productSearchTxt" type="text" th:field="*{searchString}" /> </p>
+    Search Here : <input type="submit" value="Search" />
+</form>
+        <br/>
+<h1> Your Search Results</h1>
+<form action="#" th:action="@{/store}" th:object="${selectProducts}" method="post">
+<table border="1">
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Name </th>
+        <th> Type </th>
+        <th> Select </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"> </td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.type}"></td>
+        <td> <input type='checkbox' th:field="*{selectedProducts}" th:value="${product.id}" > </td>
+    </tr>
+    </tbody>
+</table>
+    <br/>
+    Add to cart :  <input type="submit" value="Add to cart" />
+</form>
+<br/> <br/>
+        <h1> Your Cart</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Name </th>
+        <th> Type </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${productsBasket}">
+        <td th:text="${product.id}"> </td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.type}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2 th:text="*{errorMsg}"> </h2>
+        <br/> <br/>
+    </div>
+</center>
+</body>
+</html>
